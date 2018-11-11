@@ -3,6 +3,12 @@
 #include <string.h>
 
 int enmascarar_c(unsigned char *a, unsigned char *b, unsigned char *mask, int cant) {
+	int i;
+	for (i=0; i<cant; i++) {
+		if (mask[i] != 0) { 
+			a[i] = b[i];
+		}
+	}
 	return 0;
 }
 
