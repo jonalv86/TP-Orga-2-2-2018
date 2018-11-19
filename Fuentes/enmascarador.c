@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 int enmascarar_c(unsigned char *a, unsigned char *b, unsigned char *mask, long cant) {
 	int i=0;
@@ -56,17 +57,23 @@ int main(int argc, char *argv[]) {
 	leer_rgb(argv[2], img2, ancho, alto);
 	leer_rgb(argv[3], mascara, ancho, alto);
 	
-	//TODO: Iniciar cronómetro.
+	clock_t inicio = clock();
 	enmascarar_c(img1, img2, mascara, cantidad);
-	//TODO: Detener cronómetro y mostrar por pantalla. 
+	clock_t fin = clock();
+	double tiempoTotal = (double)(fin - inicio) / CLOCKS_PER_SEC;
+	printf ("enmascarar_c demora %f segundos en una imagen de %i x %i\n", tiempoTotal, ancho, alto);
 	escribir_rgb("salida_c.rgb", img1, ancho, alto);	//img1 se encuentra pisado escribir archivo salida_c.rgb con el contenido de img1.
-	//leer_rgb(argv[1], img1, ancho, alto);
-	//leer_rgb(argv[2], img2, ancho, alto);	//No estoy seguro si es necesario, hay que testear.
 	
+	leer_rgb(argv[1], img1, ancho, alto);
+	//leer_rgb(argv[2], img2, ancho, alto);	//No estoy seguro si es necesario, hay que testear.
 	//TODO: Iniciar cronómetro. Ver si tiene mas de 16 bytes
-	//enmascarar_asm(img1, img2, mascara, cantidad);
-	//TODO: Detener cronómetro y mostrar por pantalla. 
-	//escribir_rgb("salida_asm.rgb", img1, ancho, alto);	//img1 se encuentra pisado escribir archivo salida_asm.rgb con el contenido de img1.
+	inicio = clock();
+	enmascarar_asm(img1, img2, mascara, cantidad);
+	fin = clock();
+	tiempoTotal = (double)(fin - inicio) / CLOCKS_PER_SEC;
+	printf ("enmascarar_asm demora %f segundos en una imagen de %i x %i\n", tiempoTotal, ancho, alto);
+	escribir_rgb("salida_asm.rgb", img1, ancho, alto);	//img1 se encuentra pisado escribir archivo salida_asm.rgb con el contenido de img1.
+	
 	free(img1);
 	free(img2);
 	free(mascara);
